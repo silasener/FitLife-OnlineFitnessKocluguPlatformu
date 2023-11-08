@@ -7,4 +7,6 @@ import org.springframework.stereotype.Component;
 public interface AdminService {
 
     Admin adminGirisi(String email, String sifre);
+
+    boolean adminSifreDegistir(String email,String yeniSifre);
 }

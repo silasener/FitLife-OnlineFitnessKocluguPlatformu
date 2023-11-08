@@ -24,4 +24,17 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
+    @Override
+    public boolean adminSifreDegistir(String email, String yeniSifre) {
+        List<Admin> adminList=adminRepo.findAll();
+        for (Admin admin:adminList) {
+            if(admin.getEmail().equals(email)){
+                admin.setSifre(yeniSifre);
+                adminRepo.save(admin);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

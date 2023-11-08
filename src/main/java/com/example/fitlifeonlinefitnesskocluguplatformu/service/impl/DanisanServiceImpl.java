@@ -51,4 +51,19 @@ public class DanisanServiceImpl implements DanisanService {
         }
         return null;
     }
+
+    @Override
+    public boolean danisanSifreDegistir(String email, String yeniSifre) {
+        List<Danisan> danisanList=danisanRepo.findAll();
+        for (Danisan danisan:danisanList) {
+            if(danisan.getEmail().equals(email)){
+                danisan.setSifre(yeniSifre);
+                danisanRepo.save(danisan);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

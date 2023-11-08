@@ -52,5 +52,18 @@ public class AntrenorServiceImpl implements AntrenorService {
         return null;
     }
 
+    @Override
+    public boolean antrenorSifreDegistir(String email, String yeniSifre) {
+        List<Antrenor> antrenorList=antrenorRepo.findAll();
+        for (Antrenor antrenor:antrenorList) {
+            if(antrenor.getEmail().equals(email)){
+                antrenor.setSifre(yeniSifre);
+                antrenorRepo.save(antrenor);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }

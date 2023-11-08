@@ -55,5 +55,18 @@ public class FitLifeApiController {
         }
     }
 
+    @PostMapping("/sifreSifirla")
+    public ResponseEntity<String> sifreSifirla(@RequestBody GirisRequest kullaniciVerileri) {
+        if(adminService.adminSifreDegistir(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre())){
+            return ResponseEntity.ok("Admin şifre sıfırlama başarılı");
+        }else if(antrenorService.antrenorSifreDegistir(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre())){
+            return ResponseEntity.ok("Antrenör şifre sıfırlama başarılı");
+        }else if(danisanService.danisanSifreDegistir(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre())){
+            return ResponseEntity.ok("Danışan şifre sıfırlama başarılı");
+        }else{
+            return ResponseEntity.ok("Şifre sıfırlama başarısız");
+        }
+    }
+
 
 }

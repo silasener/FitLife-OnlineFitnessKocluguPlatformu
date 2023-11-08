@@ -10,4 +10,6 @@ public interface DanisanService {
     void danisanKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL);
 
     Danisan danisanGirisi(String email, String sifre);
+
+    boolean danisanSifreDegistir(String email,String yeniSifre);
 }
