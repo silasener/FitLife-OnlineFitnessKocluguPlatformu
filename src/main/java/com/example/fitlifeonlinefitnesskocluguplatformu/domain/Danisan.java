@@ -25,17 +25,20 @@ public class Danisan{
     @Column(name = "soyad")
     private String soyad;
 
+    @Column(name = "cinsiyet")
+    private String cinsiyet;
+
     @Column(name = "dogum_tarihi")
     private LocalDate dogumTarihi;
 
-    @Column(name = "cinsiyet")
-    private String cinsiyet;
+    @Column(name = "telefon_numarasi")
+    private String telefonNumarasi;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "telefon_numarasi")
-    private String telefonNumarasi;
+    @Column(name = "sifre")
+    private String sifre;
 
     @Column(name = "profil_fotografi")
     private String profilFotografi;

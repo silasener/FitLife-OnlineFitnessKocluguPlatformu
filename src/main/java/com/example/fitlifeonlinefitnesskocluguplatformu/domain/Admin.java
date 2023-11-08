@@ -21,6 +21,6 @@ public class Admin {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
-    private String password;
+    @Column(name = "sifre")
+    private String sifre;
 }
