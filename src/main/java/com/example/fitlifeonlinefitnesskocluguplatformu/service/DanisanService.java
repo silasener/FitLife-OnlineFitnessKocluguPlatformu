@@ -4,6 +4,7 @@ import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Danisan;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public interface DanisanService {
@@ -12,4 +13,8 @@ public interface DanisanService {
     Danisan danisanGirisi(String email, String sifre);
 
     boolean danisanSifreDegistir(String email,String yeniSifre);
+
+    Danisan danisanBul(String email);
+
+    List<Danisan> tumDanisanlariGetir();
 }

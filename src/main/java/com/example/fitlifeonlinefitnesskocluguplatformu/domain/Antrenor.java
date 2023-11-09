@@ -43,4 +43,7 @@ public class Antrenor {
 
     @Column(name = "profil_fotografi")
     private String profilFotografi;
+
+    @Column(name = "aktif_mi")
+    private boolean aktifMi = true;
 }

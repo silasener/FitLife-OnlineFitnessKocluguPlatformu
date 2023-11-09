@@ -65,5 +65,21 @@ public class DanisanServiceImpl implements DanisanService {
         return false;
     }
 
+    @Override
+    public Danisan danisanBul(String email) {
+        List<Danisan> danisanList=danisanRepo.findAll();
+        for (Danisan danisan:danisanList) {
+            if(danisan.getEmail().equals(email)){
+                return danisan;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Danisan> tumDanisanlariGetir() {
+        return danisanRepo.findAll();
+    }
+
 
 }

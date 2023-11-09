@@ -4,6 +4,7 @@ import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Antrenor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public interface AntrenorService {
@@ -12,4 +13,8 @@ public interface AntrenorService {
     Antrenor antrenorGirisi(String email, String sifre);
 
     boolean antrenorSifreDegistir(String email,String yeniSifre);
+
+    Antrenor antrenorBul(String email);
+
+    List<Antrenor> tumAntrenorleriGetir();
 }

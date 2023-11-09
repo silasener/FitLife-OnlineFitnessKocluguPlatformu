@@ -65,5 +65,21 @@ public class AntrenorServiceImpl implements AntrenorService {
         return false;
     }
 
+    @Override
+    public Antrenor antrenorBul(String email) {
+        List<Antrenor> antrenorList=antrenorRepo.findAll();
+        for (Antrenor antrenor:antrenorList) {
+            if(antrenor.getEmail().equals(email)){
+                return antrenor;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Antrenor> tumAntrenorleriGetir() {
+        return antrenorRepo.findAll();
+    }
+
 
 }
