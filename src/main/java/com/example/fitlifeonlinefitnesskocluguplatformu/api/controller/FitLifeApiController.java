@@ -47,9 +47,17 @@ public class FitLifeApiController {
         if (Objects.nonNull(adminService.adminGirisi(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre()))) {
             return ResponseEntity.ok("Admin girişi başarılı");
         }else if(Objects.nonNull(antrenorService.antrenorGirisi(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre()))){
-            return ResponseEntity.ok("Antrenör girişi başarılı");
+            if((antrenorService.antrenorGirisi(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre()).isAktifMi())){
+                return ResponseEntity.ok("Antrenör girişi başarılı");
+            }else {
+                return ResponseEntity.status(403).body("Hesap devre dışı bırakılmış!");
+            }
         }else if(Objects.nonNull(danisanService.danisanGirisi(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre()))){
-            return ResponseEntity.ok("Danışan girişi başarılı");
+            if((danisanService.danisanGirisi(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre()).isAktifMi())){
+                return ResponseEntity.ok("Danışan girişi başarılı");
+            }else {
+                return ResponseEntity.status(403).body("Hesap devre dışı bırakılmış!");
+            }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Giriş başarısız");
         }
