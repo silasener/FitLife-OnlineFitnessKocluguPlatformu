@@ -1,10 +1,8 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.service.impl;
 
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
-import com.example.fitlifeonlinefitnesskocluguplatformu.repository.AntrenorDeneyimleriRepo;
-import com.example.fitlifeonlinefitnesskocluguplatformu.repository.AntrenorRepo;
-import com.example.fitlifeonlinefitnesskocluguplatformu.repository.DanisanAntrenorEslesmesiRepo;
-import com.example.fitlifeonlinefitnesskocluguplatformu.repository.DeneyimlerRepo;
+import com.example.fitlifeonlinefitnesskocluguplatformu.repository.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AntrenorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +19,9 @@ public class AntrenorServiceImpl implements AntrenorService {
     private DanisanAntrenorEslesmesiRepo danisanAntrenorEslesmesiRepo;
     private DeneyimlerRepo deneyimlerRepo;
     private AntrenorDeneyimleriRepo antrenorDeneyimleriRepo;
+    private AntrenorEgzersizProgramlariRepo antrenorEgzersizProgramlariRepo;
+    private DanisanEgzersizProgramlariRepo danisanEgzersizProgramlariRepo;
+    private DanisanRepo danisanRepo;
 
     @Override
     public void antrenorKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
@@ -185,6 +186,58 @@ public class AntrenorServiceImpl implements AntrenorService {
         antrenorunEskiBilgileri.setEmail(antrenor.getEmail());
         antrenorunEskiBilgileri.setSifre(antrenor.getSifre());
         antrenorRepo.save(antrenorunEskiBilgileri);
+    }
+
+    @Override
+    public void egzersizPlaniOlustur(EgzersizPlaniRequest request) {
+        Antrenor antrenor=antrenorRepo.findAntrenorById(request.getAntrenorId());
+        AntrenorEgzersizProgramlari antrenorEgzersizProgramlari=new AntrenorEgzersizProgramlari();
+        antrenorEgzersizProgramlari.setAntrenor(antrenor);
+        antrenorEgzersizProgramlari.setEgzersizAdi(request.getEgzersizAdi());
+        antrenorEgzersizProgramlari.setEgzersizHedefi(request.getEgzersizHedefi());
+        antrenorEgzersizProgramlari.setSetSayisi(request.getSetSayisi());
+        antrenorEgzersizProgramlari.setTekrarSayisi(request.getTekrarSayisi());
+        antrenorEgzersizProgramlari.setProgramBaslamaTarihi(request.getProgramBaslamaTarihi());
+        antrenorEgzersizProgramlari.setProgramSuresi(request.getProgramSuresi());
+        antrenorEgzersizProgramlariRepo.save(antrenorEgzersizProgramlari);
+    }
+
+    @Override
+    public List<AntrenorEgzersizProgramlari> egzersizPlanlarim(int antrenorId) {
+        Antrenor antrenor=antrenorRepo.findAntrenorById(antrenorId);
+        List<AntrenorEgzersizProgramlari> antrenorEgzersizProgramlari=antrenorEgzersizProgramlariRepo.findAntrenorEgzersizProgramlariByAntrenor(antrenor);
+        return antrenorEgzersizProgramlari;
+    }
+
+    @Override
+    public AntrenorEgzersizProgramlari egzersizPlanim(int egzersizId) {
+        AntrenorEgzersizProgramlari egzersizPlanim=antrenorEgzersizProgramlariRepo.findAntrenorEgzersizProgramlariById(egzersizId);
+        return egzersizPlanim;
+    }
+
+    @Override
+    public void egzersizPlaniBilgileriGuncelle(AntrenorEgzersizProgramlari antrenorEgzersizProgrami) {
+        AntrenorEgzersizProgramlari programim=antrenorEgzersizProgramlariRepo.findAntrenorEgzersizProgramlariById(antrenorEgzersizProgrami.getId());
+        programim.setEgzersizAdi(antrenorEgzersizProgrami.getEgzersizAdi());
+        programim.setEgzersizHedefi(antrenorEgzersizProgrami.getEgzersizHedefi());
+        programim.setSetSayisi(antrenorEgzersizProgrami.getSetSayisi());
+        programim.setTekrarSayisi(antrenorEgzersizProgrami.getTekrarSayisi());
+        programim.setProgramBaslamaTarihi(antrenorEgzersizProgrami.getProgramBaslamaTarihi());
+        programim.setProgramSuresi(antrenorEgzersizProgrami.getProgramSuresi());
+        antrenorEgzersizProgramlariRepo.save(programim);
+    }
+
+    @Override
+    public List<DanisanEgzersizProgramlari> getDanisaninEgzersizPlanlari(int danisanId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        List<DanisanEgzersizProgramlari> danisaninProgramlari= danisanEgzersizProgramlariRepo.findDanisanEgzersizProgramlariByDanisan(danisan);
+        return danisaninProgramlari;
+    }
+
+    @Override
+    public DanisanEgzersizProgramlari getdanisaninEgzersizPlaniDetay(int planId) {
+        DanisanEgzersizProgramlari danisanEgzersiziDetay=danisanEgzersizProgramlariRepo.findDanisanEgzersizProgramlariByAntrenorEgzersizProgramlari_Id(planId);
+        return danisanEgzersiziDetay;
     }
 
 

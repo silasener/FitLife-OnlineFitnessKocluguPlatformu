@@ -6,9 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Table(name = "egzersizProgramlari")
+@Table(name = "antrenorEgzersizProgramlari")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,7 +35,7 @@ public class AntrenorEgzersizProgramlari {
     private int tekrarSayisi;
 
     @Column(name = "programBaslamaTarihi")
-    private LocalDateTime programBaslamaTarihi;
+    private LocalDate programBaslamaTarihi;
 
     @Column(name = "programSuresi")
     private int programSuresi;

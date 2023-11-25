@@ -1,10 +1,8 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.api.controller;
 
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DeneyimEkleRequest;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Antrenor;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.AntrenorDeneyimleri;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Danisan;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Deneyimler;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AntrenorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -108,6 +106,49 @@ public class AntrenorApiController {
     public ResponseEntity<?> guncelleAntrenor(@RequestBody Antrenor antrenor) {
         antrenorService.antrenorBilgileriGuncelle(antrenor);
         return ResponseEntity.ok("Danışan bilgileri başarıyla güncellendi.");
+    }
+
+    @PostMapping("/egzersizPlaniOlustur")
+    public ResponseEntity<String> egzersizPlaniOlustur(@RequestBody EgzersizPlaniRequest egzersizPlaniRequest) {
+        try {
+            // request nesnesinden gerekli bilgileri alarak egzersiz planını oluşturun
+            antrenorService.egzersizPlaniOlustur(egzersizPlaniRequest);
+            return ResponseEntity.ok("Egzersiz planı başarıyla oluşturuldu.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Egzersiz planı oluşturulurken bir hata oluştu.");
+        }
+    }
+
+    @GetMapping("/egzersizPlanlarim")
+    public ResponseEntity<?> egzersizPlanlarim(@RequestParam Integer  antrenorId){
+        List<AntrenorEgzersizProgramlari> planlarim=antrenorService.egzersizPlanlarim(antrenorId);
+        return ResponseEntity.ok(planlarim);
+    }
+
+    @GetMapping("/egzersizPlanDetaylari")
+    public ResponseEntity<?> egzersizPlanim(@RequestParam Integer egzersizPlanId){
+        AntrenorEgzersizProgramlari egzersizPlanim=antrenorService.egzersizPlanim(egzersizPlanId);
+        return ResponseEntity.ok(egzersizPlanim);
+    }
+
+
+    @PostMapping("/guncelleEgzersizPlani")
+    public ResponseEntity<?> guncelleEgzersizPlani(@RequestBody AntrenorEgzersizProgramlari antrenorEgzersizProgramlari) {
+        antrenorService.egzersizPlaniBilgileriGuncelle(antrenorEgzersizProgramlari);
+        return ResponseEntity.ok("Egzersiz plan bilgileri başarıyla güncellendi.");
+    }
+
+    @GetMapping("/danisaninEgzersizPlanlari")
+    public ResponseEntity<?> getDanisaninEgzersizPlanlari(@RequestParam int danisanId) {
+        try {
+            // AntrenorService'de danışanın egzersiz planlarını getiren bir metodunuzu çağırın
+            List<DanisanEgzersizProgramlari> egzersizPlanlari = antrenorService.getDanisaninEgzersizPlanlari(danisanId);
+            return ResponseEntity.ok(egzersizPlanlari);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Danışanın egzersiz planlarını getirirken bir hata oluştu.");
+        }
     }
 
 

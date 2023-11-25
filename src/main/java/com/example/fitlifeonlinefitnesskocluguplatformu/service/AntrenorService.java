@@ -1,9 +1,7 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.service;
 
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Antrenor;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.AntrenorDeneyimleri;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Danisan;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Deneyimler;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -40,4 +38,17 @@ public interface AntrenorService {
     void uzmanlikAlaniKaldir(int antrenorId, int deneyimId);
 
     void antrenorBilgileriGuncelle(Antrenor antrenor);
+
+    void egzersizPlaniOlustur(EgzersizPlaniRequest request);
+
+    List<AntrenorEgzersizProgramlari> egzersizPlanlarim(int antrenorId);
+
+    AntrenorEgzersizProgramlari egzersizPlanim(int egzersizId);
+
+    void egzersizPlaniBilgileriGuncelle(AntrenorEgzersizProgramlari antrenorEgzersizProgrami);
+
+    List<DanisanEgzersizProgramlari> getDanisaninEgzersizPlanlari(int danisanId);
+
+    DanisanEgzersizProgramlari getdanisaninEgzersizPlaniDetay(int planId);
+
 }
