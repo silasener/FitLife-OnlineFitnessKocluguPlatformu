@@ -59,4 +59,6 @@ public interface AntrenorService {
 
     void danisanaMesajGonder(DanisanaMesajGonderRequest request);
 
+    List<AntrenorGelenKutusu> getGelenMesajlar(int antrenorId);
+
 }

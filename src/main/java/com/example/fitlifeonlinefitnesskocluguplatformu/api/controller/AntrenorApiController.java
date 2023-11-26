@@ -188,4 +188,14 @@ public class AntrenorApiController {
         }
     }
 
+    @GetMapping("/gelenMesajlar")
+    public ResponseEntity<?> getGelenMesajlar(@RequestParam Integer antrenorId) {
+        try {
+            List<AntrenorGelenKutusu> gelenMesajlar = antrenorService.getGelenMesajlar(antrenorId);
+            return ResponseEntity.ok(gelenMesajlar);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null); // Hata durumunda uygun bir cevap döndürülebilir.
+        }
+    }
+
 }

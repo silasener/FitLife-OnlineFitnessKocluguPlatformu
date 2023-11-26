@@ -1,7 +1,10 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.service.impl;
 
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Danisan;
-import com.example.fitlifeonlinefitnesskocluguplatformu.repository.DanisanRepo;
+import com.example.fitlifeonlinefitnesskocluguplatformu.EgzersizDurumu;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.AntrenoreMesajGonderRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanGuncellemeRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
+import com.example.fitlifeonlinefitnesskocluguplatformu.repository.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.DanisanService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,11 @@ import java.util.List;
 @Service
 public class DanisanServiceImpl implements DanisanService {
     private DanisanRepo danisanRepo;
+    private AntrenorRepo antrenorRepo;
+    private DanisanEgzersizProgramlariRepo danisanEgzersizProgramlariRepo;
+    private AntrenorEgzersizProgramlariRepo antrenorEgzersizProgramlariRepo;
+    private AntrenorGelenKutusuRepo antrenorGelenKutusuRepo;
+    private DanisanGelenKutusuRepo danisanGelenKutusuRepo;
 
     @Override
     public void danisanKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
@@ -80,6 +88,57 @@ public class DanisanServiceImpl implements DanisanService {
     public List<Danisan> tumDanisanlariGetir() {
         return danisanRepo.findAll();
     }
+
+    @Override
+    public void danisanGuncelle(DanisanGuncellemeRequest request) {
+        Danisan danisan=danisanRepo.findDanisanById(request.getId());
+        danisan.setAd(request.getAd());
+        danisan.setSoyad(request.getSoyad());
+        danisan.setTelefonNumarasi(request.getTelefonNumarasi());
+        danisan.setEmail(request.getEmail());
+        danisan.setSifre(request.getSifre());
+        danisanRepo.save(danisan);
+    }
+
+    @Override
+    public List<DanisanEgzersizProgramlari> danisanProgramlist(int danisanId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        List<DanisanEgzersizProgramlari> danisanEgzersizProgramlariList=danisanEgzersizProgramlariRepo.findDanisanEgzersizProgramlariByDanisan(danisan);
+        return danisanEgzersizProgramlariList;
+    }
+
+    @Override
+    public AntrenorEgzersizProgramlari getEgzersizPlanDetaylari(int egzersizId) {
+        AntrenorEgzersizProgramlari program=antrenorEgzersizProgramlariRepo.findAntrenorEgzersizProgramlariById(egzersizId);
+        return program;
+    }
+
+    @Override
+    public void egzersizPlaniniTamamla(int danisanEgzersizProgramlariId) {
+        DanisanEgzersizProgramlari program= danisanEgzersizProgramlariRepo.findDanisanEgzersizProgramlariById(danisanEgzersizProgramlariId);
+        program.setEgzersizDurumu(EgzersizDurumu.YAPILDI);
+        danisanEgzersizProgramlariRepo.save(program);
+    }
+
+    @Override
+    public void antrenoreMesajGonder(AntrenoreMesajGonderRequest request) {
+        Danisan danisan=danisanRepo.findDanisanById(request.getDanisanId());
+        Antrenor antrenor=antrenorRepo.findAntrenorById(request.getAntrenorId());
+        AntrenorGelenKutusu antrenorGelenKutusu=new AntrenorGelenKutusu();
+        antrenorGelenKutusu.setAntrenor(antrenor);
+        antrenorGelenKutusu.setDanisan(danisan);
+        antrenorGelenKutusu.setMesaj(request.getMesaj());
+        antrenorGelenKutusuRepo.save(antrenorGelenKutusu);
+    }
+
+    @Override
+    public List<DanisanGelenKutusu> danisanGelenKutusu(int danisanId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        List<DanisanGelenKutusu> danisaninMesajKutusu=danisanGelenKutusuRepo.findDanisanGelenKutusuByDanisan(danisan);
+        return danisaninMesajKutusu;
+    }
+
+
 
 
 }

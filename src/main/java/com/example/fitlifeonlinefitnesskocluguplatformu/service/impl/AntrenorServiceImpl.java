@@ -26,6 +26,7 @@ public class AntrenorServiceImpl implements AntrenorService {
     private DanisanEgzersizProgramlariRepo danisanEgzersizProgramlariRepo;
     private DanisanRepo danisanRepo;
     private DanisanGelenKutusuRepo danisanGelenKutusuRepo;
+    private AntrenorGelenKutusuRepo antrenorGelenKutusuRepo;
 
     @Override
     public void antrenorKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
@@ -280,6 +281,13 @@ public class AntrenorServiceImpl implements AntrenorService {
         danisanGelenKutusu.setDanisan(danisan);
         danisanGelenKutusu.setAntrenor(antrenor);
         danisanGelenKutusuRepo.save(danisanGelenKutusu);
+    }
+
+    @Override
+    public List<AntrenorGelenKutusu> getGelenMesajlar(int antrenorId) {
+        Antrenor antrenor=antrenorRepo.findAntrenorById(antrenorId);
+        List<AntrenorGelenKutusu> antrenorGelenKutusu= antrenorGelenKutusuRepo.findAntrenorGelenKutusuByAntrenor(antrenor);
+        return antrenorGelenKutusu;
     }
 
 

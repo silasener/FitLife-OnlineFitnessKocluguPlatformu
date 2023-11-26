@@ -10,4 +10,6 @@ public interface DanisanEgzersizProgramlariRepo extends JpaRepository<DanisanEgz
     List<DanisanEgzersizProgramlari> findDanisanEgzersizProgramlariByDanisan(Danisan danisan);
 
     DanisanEgzersizProgramlari findDanisanEgzersizProgramlariByAntrenorEgzersizProgramlari_Id(int programId);
+
+    DanisanEgzersizProgramlari findDanisanEgzersizProgramlariById(int id);
 }

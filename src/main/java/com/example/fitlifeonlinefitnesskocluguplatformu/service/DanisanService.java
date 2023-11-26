@@ -1,6 +1,11 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.service;
 
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.AntrenoreMesajGonderRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanGuncellemeRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.domain.AntrenorEgzersizProgramlari;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Danisan;
+import com.example.fitlifeonlinefitnesskocluguplatformu.domain.DanisanEgzersizProgramlari;
+import com.example.fitlifeonlinefitnesskocluguplatformu.domain.DanisanGelenKutusu;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -17,4 +22,16 @@ public interface DanisanService {
     Danisan danisanBul(String email);
 
     List<Danisan> tumDanisanlariGetir();
+
+    void danisanGuncelle(DanisanGuncellemeRequest request);
+
+    List<DanisanEgzersizProgramlari> danisanProgramlist(int danisanId);
+
+   AntrenorEgzersizProgramlari getEgzersizPlanDetaylari(int egzersizId);
+
+   void egzersizPlaniniTamamla(int danisanEgzersizProgramlariId);
+
+   void antrenoreMesajGonder(AntrenoreMesajGonderRequest request);
+
+   List<DanisanGelenKutusu> danisanGelenKutusu(int danisanId);
 }
