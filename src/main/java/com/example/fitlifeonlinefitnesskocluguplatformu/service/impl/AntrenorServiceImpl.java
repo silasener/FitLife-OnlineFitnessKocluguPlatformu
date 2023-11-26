@@ -1,6 +1,7 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.service.impl;
 
 import com.example.fitlifeonlinefitnesskocluguplatformu.EgzersizDurumu;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaMesajGonderRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaPlanAtaRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
@@ -24,6 +25,7 @@ public class AntrenorServiceImpl implements AntrenorService {
     private AntrenorEgzersizProgramlariRepo antrenorEgzersizProgramlariRepo;
     private DanisanEgzersizProgramlariRepo danisanEgzersizProgramlariRepo;
     private DanisanRepo danisanRepo;
+    private DanisanGelenKutusuRepo danisanGelenKutusuRepo;
 
     @Override
     public void antrenorKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
@@ -267,6 +269,17 @@ public class AntrenorServiceImpl implements AntrenorService {
         programiAta.setAntrenorEgzersizProgramlari(program);
         programiAta.setEgzersizDurumu(EgzersizDurumu.YAPILMADI);
         danisanEgzersizProgramlariRepo.save(programiAta);
+    }
+
+    @Override
+    public void danisanaMesajGonder(DanisanaMesajGonderRequest request) {
+        Danisan danisan=danisanRepo.findDanisanById(request.getDanisanId());
+        Antrenor antrenor=antrenorRepo.findAntrenorById(request.getAntrenorId());
+        DanisanGelenKutusu danisanGelenKutusu=new DanisanGelenKutusu();
+        danisanGelenKutusu.setMesaj(request.getMesaj());
+        danisanGelenKutusu.setDanisan(danisan);
+        danisanGelenKutusu.setAntrenor(antrenor);
+        danisanGelenKutusuRepo.save(danisanGelenKutusu);
     }
 
 

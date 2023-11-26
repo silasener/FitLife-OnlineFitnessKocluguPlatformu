@@ -1,5 +1,6 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.api.controller;
 
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaMesajGonderRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaPlanAtaRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DeneyimEkleRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
@@ -173,6 +174,17 @@ public class AntrenorApiController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Danışana egzersiz planı atanırken bir hata oluştu.");
+        }
+    }
+
+    @PostMapping("/danisanaMesajGonder")
+    public ResponseEntity<String> mesajGonder(@RequestBody DanisanaMesajGonderRequest danisanaMesajGonderRequest) {
+        try {
+            antrenorService.danisanaMesajGonder(danisanaMesajGonderRequest);
+            return ResponseEntity.ok("Mesaj başarıyla gönderildi.");
+        } catch (Exception e) {
+            // Hata durumunda iç hata mesajını döndür
+            return ResponseEntity.status(500).body("Mesaj gönderilirken bir hata oluştu.");
         }
     }
 
