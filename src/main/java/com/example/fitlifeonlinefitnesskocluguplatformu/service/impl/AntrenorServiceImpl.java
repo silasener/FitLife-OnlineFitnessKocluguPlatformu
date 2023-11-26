@@ -1,5 +1,7 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.service.impl;
 
+import com.example.fitlifeonlinefitnesskocluguplatformu.EgzersizDurumu;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaPlanAtaRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.repository.*;
@@ -238,6 +240,33 @@ public class AntrenorServiceImpl implements AntrenorService {
     public DanisanEgzersizProgramlari getdanisaninEgzersizPlaniDetay(int planId) {
         DanisanEgzersizProgramlari danisanEgzersiziDetay=danisanEgzersizProgramlariRepo.findDanisanEgzersizProgramlariByAntrenorEgzersizProgramlari_Id(planId);
         return danisanEgzersiziDetay;
+    }
+
+    @Override
+    public List<AntrenorEgzersizProgramlari> danisaninAlmadigiEgzersizPlanlari(int danisanId, int antrenorId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        Antrenor antrenor=antrenorRepo.findAntrenorById(antrenorId);
+        List<AntrenorEgzersizProgramlari> antrenorProgramlari=antrenorEgzersizProgramlariRepo.findAntrenorEgzersizProgramlariByAntrenor(antrenor);
+        List<DanisanEgzersizProgramlari> danisanEgzersizi=danisanEgzersizProgramlariRepo.findDanisanEgzersizProgramlariByDanisan(danisan);
+        List<Integer> egzersizId=new ArrayList<>();
+        for (DanisanEgzersizProgramlari program:danisanEgzersizi) {
+            egzersizId.add(program.getAntrenorEgzersizProgramlari().getId());
+        }
+        antrenorProgramlari=antrenorProgramlari.stream().filter(id-> !egzersizId.contains(id.getId())).collect(Collectors.toList());
+        return antrenorProgramlari;
+    }
+
+    @Override
+    public void danisanaEgzersizPlaniAta(DanisanaPlanAtaRequest request) {
+        Danisan danisan=danisanRepo.findDanisanById(request.getDanisanId());
+        Antrenor antrenor=antrenorRepo.findAntrenorById(request.getAntrenorId());
+        AntrenorEgzersizProgramlari program=antrenorEgzersizProgramlariRepo.findAntrenorEgzersizProgramlariById(request.getProgramId());
+        DanisanEgzersizProgramlari programiAta=new DanisanEgzersizProgramlari();
+        programiAta.setDanisan(danisan);
+        programiAta.setAntrenor(antrenor);
+        programiAta.setAntrenorEgzersizProgramlari(program);
+        programiAta.setEgzersizDurumu(EgzersizDurumu.YAPILMADI);
+        danisanEgzersizProgramlariRepo.save(programiAta);
     }
 
 

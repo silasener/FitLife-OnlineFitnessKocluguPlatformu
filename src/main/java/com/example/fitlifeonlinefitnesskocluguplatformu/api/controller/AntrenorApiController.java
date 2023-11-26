@@ -1,5 +1,6 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.api.controller;
 
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaPlanAtaRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DeneyimEkleRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
@@ -151,6 +152,28 @@ public class AntrenorApiController {
         }
     }
 
+    @GetMapping("/danisaninAlmadigiEgzersizPlanlari")
+    public ResponseEntity<?> getDanisaninAlmadigiEgzersizPlanlari(@RequestParam int danisanId,@RequestParam int antrenorId) {
+        try {
+            List<AntrenorEgzersizProgramlari> egzersizPlanlari = antrenorService.danisaninAlmadigiEgzersizPlanlari(danisanId,antrenorId);
+            return ResponseEntity.ok(egzersizPlanlari);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Danışanın egzersiz planlarını getirirken bir hata oluştu.");
+        }
+    }
 
+
+
+    @PostMapping("/danisanaEgzersizPlaniAta")
+    public ResponseEntity<String> danisanaEgzersizPlaniAta(@RequestBody DanisanaPlanAtaRequest danisanaPlanAtaRequest) {
+        try {
+            antrenorService.danisanaEgzersizPlaniAta(danisanaPlanAtaRequest);
+            return ResponseEntity.ok("Danışana egzersiz planı atandı.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Danışana egzersiz planı atanırken bir hata oluştu.");
+        }
+    }
 
 }

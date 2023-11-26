@@ -1,5 +1,6 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.service;
 
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaPlanAtaRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import org.springframework.stereotype.Component;
@@ -50,5 +51,9 @@ public interface AntrenorService {
     List<DanisanEgzersizProgramlari> getDanisaninEgzersizPlanlari(int danisanId);
 
     DanisanEgzersizProgramlari getdanisaninEgzersizPlaniDetay(int planId);
+
+    List<AntrenorEgzersizProgramlari> danisaninAlmadigiEgzersizPlanlari(int danisanId,int antrenorId);
+
+    void danisanaEgzersizPlaniAta(DanisanaPlanAtaRequest request);
 
 }
