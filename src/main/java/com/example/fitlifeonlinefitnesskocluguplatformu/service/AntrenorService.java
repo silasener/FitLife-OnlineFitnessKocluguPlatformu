@@ -1,5 +1,6 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.service;
 
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.BeslenmePlaniOlusturRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaMesajGonderRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaPlanAtaRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
@@ -60,5 +61,11 @@ public interface AntrenorService {
     void danisanaMesajGonder(DanisanaMesajGonderRequest request);
 
     List<AntrenorGelenKutusu> getGelenMesajlar(int antrenorId);
+
+    void beslenmePlaniOlustur(BeslenmePlaniOlusturRequest request);
+
+    List<BeslenmePlani> antrenorBeslenmePlanlariList(int antrenorId);
+
+    BeslenmePlani beslenmePlanim(int beslenmePlanId);
 
 }

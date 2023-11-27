@@ -1,6 +1,7 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.service.impl;
 
 import com.example.fitlifeonlinefitnesskocluguplatformu.EgzersizDurumu;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.BeslenmePlaniOlusturRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaMesajGonderRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaPlanAtaRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
@@ -27,6 +28,8 @@ public class AntrenorServiceImpl implements AntrenorService {
     private DanisanRepo danisanRepo;
     private DanisanGelenKutusuRepo danisanGelenKutusuRepo;
     private AntrenorGelenKutusuRepo antrenorGelenKutusuRepo;
+    private GunlukOgunlerRepo gunlukOgunlerRepo;
+    private BeslenmePlaniRepo beslenmePlaniRepo;
 
     @Override
     public void antrenorKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
@@ -288,6 +291,34 @@ public class AntrenorServiceImpl implements AntrenorService {
         Antrenor antrenor=antrenorRepo.findAntrenorById(antrenorId);
         List<AntrenorGelenKutusu> antrenorGelenKutusu= antrenorGelenKutusuRepo.findAntrenorGelenKutusuByAntrenor(antrenor);
         return antrenorGelenKutusu;
+    }
+
+    @Override
+    public void beslenmePlaniOlustur(BeslenmePlaniOlusturRequest request) {
+        Antrenor antrenor=antrenorRepo.findAntrenorById(request.getAntrenorId());
+        boolean sabah=request.getGunlukOgunler().contains("sabah");
+        boolean ogle = request.getGunlukOgunler().contains("ogle");
+        boolean aksam = request.getGunlukOgunler().contains("aksam");
+        GunlukOgunler gunlukOgunler=gunlukOgunlerRepo.findBySabahOgunuAndOgleOgunuAndAksamOgunu(sabah,ogle,aksam);
+        BeslenmePlani beslenmePlani=new BeslenmePlani();
+        beslenmePlani.setAntrenor(antrenor);
+        beslenmePlani.setGunlukOgunler(gunlukOgunler);
+        beslenmePlani.setKaloriHedefi(request.getKaloriHedefi());
+        beslenmePlani.setEgzersizHedefi(request.getBeslenmePlaniHedef());
+        beslenmePlaniRepo.save(beslenmePlani);
+    }
+
+    @Override
+    public List<BeslenmePlani> antrenorBeslenmePlanlariList(int antrenorId) {
+        Antrenor antrenor=antrenorRepo.findAntrenorById(antrenorId);
+        List<BeslenmePlani> antrenorunBeslenmePlanlari=beslenmePlaniRepo.findByAntrenor(antrenor);
+        return antrenorunBeslenmePlanlari;
+    }
+
+    @Override
+    public BeslenmePlani beslenmePlanim(int beslenmePlanId) {
+        BeslenmePlani planim=beslenmePlaniRepo.findById(beslenmePlanId);
+        return planim;
     }
 
 

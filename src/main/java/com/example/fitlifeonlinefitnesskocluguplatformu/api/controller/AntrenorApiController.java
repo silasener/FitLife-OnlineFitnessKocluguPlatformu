@@ -1,9 +1,6 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.api.controller;
 
-import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaMesajGonderRequest;
-import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaPlanAtaRequest;
-import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DeneyimEkleRequest;
-import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.EgzersizPlaniRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AntrenorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,5 +194,35 @@ public class AntrenorApiController {
             return ResponseEntity.status(500).body(null); // Hata durumunda uygun bir cevap döndürülebilir.
         }
     }
+
+    @PostMapping("/beslenmePlaniOlustur")
+    public ResponseEntity<String> beslenmePlaniOlustur(@RequestBody BeslenmePlaniOlusturRequest beslenmePlaniOlusturRequest) {
+        try {
+            antrenorService.beslenmePlaniOlustur(beslenmePlaniOlusturRequest);
+            return ResponseEntity.ok("Beslenme planı başarıyla oluşturuldu.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Beslenme planı oluşturulurken bir hata oluştu.");
+        }
+    }
+
+
+    @GetMapping("/beslenmePlanlarim")
+    public ResponseEntity<?> getBeslenmePlanlariByAntrenorId(@RequestParam Integer antrenorId) {
+        try {
+            List<BeslenmePlani> beslenmePlanlari = antrenorService.antrenorBeslenmePlanlariList(antrenorId);
+            return ResponseEntity.ok(beslenmePlanlari);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Beslenme planları getirilirken bir hata oluştu. Hata Detayı: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/beslenmePlanDetaylari")
+    public ResponseEntity<?> beslenmePlanim(@RequestParam Integer beslenmePlanId){
+        BeslenmePlani beslenmePlanim=antrenorService.beslenmePlanim(beslenmePlanId);
+        return ResponseEntity.ok(beslenmePlanim);
+    }
+
+
 
 }
