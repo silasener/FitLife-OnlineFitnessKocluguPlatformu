@@ -21,6 +21,8 @@ public class DanisanServiceImpl implements DanisanService {
     private AntrenorEgzersizProgramlariRepo antrenorEgzersizProgramlariRepo;
     private AntrenorGelenKutusuRepo antrenorGelenKutusuRepo;
     private DanisanGelenKutusuRepo danisanGelenKutusuRepo;
+    private DanisanBeslenmePlaniRepo danisanBeslenmePlaniRepo;
+    private BeslenmePlaniRepo beslenmePlaniRepo;
 
     @Override
     public void danisanKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
@@ -138,7 +140,18 @@ public class DanisanServiceImpl implements DanisanService {
         return danisaninMesajKutusu;
     }
 
+    @Override
+    public List<DanisanBeslenmePlani> beslenmePlanlarimiBul(int danisanId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        List<DanisanBeslenmePlani> beslenmePlanlarim=danisanBeslenmePlaniRepo.findDanisanBeslenmePlaniByDanisan(danisan);
+        return beslenmePlanlarim;
+    }
 
+    @Override
+    public BeslenmePlani getBeslenmePlaniminDetayi(int beslenmePlanId) {
+        BeslenmePlani beslenmePlaniDetay=beslenmePlaniRepo.findById(beslenmePlanId);
+        return beslenmePlaniDetay;
+    }
 
 
 }

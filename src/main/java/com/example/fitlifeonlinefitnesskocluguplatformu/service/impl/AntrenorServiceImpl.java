@@ -30,6 +30,7 @@ public class AntrenorServiceImpl implements AntrenorService {
     private AntrenorGelenKutusuRepo antrenorGelenKutusuRepo;
     private GunlukOgunlerRepo gunlukOgunlerRepo;
     private BeslenmePlaniRepo beslenmePlaniRepo;
+    private DanisanBeslenmePlaniRepo danisanBeslenmePlaniRepo;
 
     @Override
     public void antrenorKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
@@ -319,6 +320,48 @@ public class AntrenorServiceImpl implements AntrenorService {
     public BeslenmePlani beslenmePlanim(int beslenmePlanId) {
         BeslenmePlani planim=beslenmePlaniRepo.findById(beslenmePlanId);
         return planim;
+    }
+
+    @Override
+    public void beslenmePlaniniGuncelle(BeslenmePlani beslenmePlani) {
+        int id=beslenmePlani.getId();
+        BeslenmePlani plan=beslenmePlaniRepo.findById(id);
+        plan.setEgzersizHedefi(beslenmePlani.getEgzersizHedefi());
+        plan.setGunlukOgunler(beslenmePlani.getGunlukOgunler());
+        plan.setKaloriHedefi(beslenmePlani.getKaloriHedefi());
+        beslenmePlaniRepo.save(plan);
+    }
+
+    @Override
+    public List<DanisanBeslenmePlani> getBeslenmePlani(int danisanId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        List<DanisanBeslenmePlani> beslenmePlanlari=danisanBeslenmePlaniRepo.findDanisanBeslenmePlaniByDanisan(danisan);
+        return beslenmePlanlari;
+    }
+
+
+    @Override
+    public List<BeslenmePlani> danisaninAlmadigiBeslenmePlanlari(int danisanId, int antrenorId) {
+        Danisan danisan = danisanRepo.findDanisanById(danisanId);
+        Antrenor antrenor = antrenorRepo.findAntrenorById(antrenorId);
+        List<BeslenmePlani> antrenorPlanlari = beslenmePlaniRepo.findByAntrenor(antrenor);
+        List<DanisanBeslenmePlani> danisaninBeslenmePlanlari = danisanBeslenmePlaniRepo.findDanisanBeslenmePlaniByDanisan(danisan);
+
+        List<Integer> planId = danisaninBeslenmePlanlari.stream().map(plan -> plan.getBeslenmePlani().getId()).collect(Collectors.toList());
+        antrenorPlanlari = antrenorPlanlari.stream().filter(plan -> !planId.contains(plan.getId())).collect(Collectors.toList());
+        return antrenorPlanlari;
+    }
+
+    @Override
+    public void danisanaBeslenmePlaniAta(DanisanaPlanAtaRequest request) {
+        Danisan danisan=danisanRepo.findDanisanById(request.getDanisanId());
+        Antrenor antrenor=antrenorRepo.findAntrenorById(request.getAntrenorId());
+        BeslenmePlani beslenmePlani=beslenmePlaniRepo.findById(request.getProgramId());
+        DanisanBeslenmePlani danisanBeslenmePlani=new DanisanBeslenmePlani();
+        danisanBeslenmePlani.setBeslenmePlani(beslenmePlani);
+        danisanBeslenmePlani.setDanisan(danisan);
+        danisanBeslenmePlani.setAntrenor(antrenor);
+        danisanBeslenmePlaniRepo.save(danisanBeslenmePlani);
     }
 
 

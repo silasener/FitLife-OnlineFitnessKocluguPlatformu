@@ -223,6 +223,50 @@ public class AntrenorApiController {
         return ResponseEntity.ok(beslenmePlanim);
     }
 
+    @PostMapping("/beslenmePlaniGuncelle")
+    public ResponseEntity<?> beslenmePlaniGuncelle(@RequestBody BeslenmePlani beslenmePlani) {
+        try {
+            antrenorService.beslenmePlaniniGuncelle(beslenmePlani);
+            return ResponseEntity.ok(beslenmePlani);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Beslenme planları güncellenirken bir hata oluştu. Hata Detayı: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/danisaninBeslenmePlanlari")
+    public ResponseEntity<?> getDanisaninBeslenmePlanlari(@RequestParam int danisanId) {
+        try {
+            List<DanisanBeslenmePlani> beslenmePlanlari = antrenorService.getBeslenmePlani(danisanId);
+            return ResponseEntity.ok(beslenmePlanlari);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Danışanın beslenme planlarını getirirken bir hata oluştu.");
+        }
+    }
+
+    @GetMapping("/danisaninAlmadigiBeslenmePlanlari")
+    public ResponseEntity<?> getDanisaninAlmadigiBeslenmePlanlari(@RequestParam int danisanId,@RequestParam int antrenorId) {
+        try {
+            List<BeslenmePlani> antrenorBeslenmePlanlari = antrenorService.danisaninAlmadigiBeslenmePlanlari(danisanId,antrenorId);
+            return ResponseEntity.ok(antrenorBeslenmePlanlari);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Beslenme planlarını getirirken bir hata oluştu.");
+        }
+    }
+
+    @PostMapping("/danisanaBeslenmePlaniAta")
+    public ResponseEntity<?> danisanaBeslenmePlaniAta(@RequestBody DanisanaPlanAtaRequest danisanaPlanAtaRequest) {
+        try {
+            antrenorService.danisanaBeslenmePlaniAta(danisanaPlanAtaRequest);
+            return ResponseEntity.ok("Danışana egzersiz planı atandı.");
+        }  catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Danışana beslenme planı atanırken bir hata oluştu.");
+        }
+    }
+
 
 
 }

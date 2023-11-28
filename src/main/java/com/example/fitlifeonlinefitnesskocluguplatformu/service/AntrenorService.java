@@ -68,4 +68,12 @@ public interface AntrenorService {
 
     BeslenmePlani beslenmePlanim(int beslenmePlanId);
 
+    void beslenmePlaniniGuncelle(BeslenmePlani beslenmePlani);
+
+    List<DanisanBeslenmePlani> getBeslenmePlani(int danisanId);
+
+    List<BeslenmePlani> danisaninAlmadigiBeslenmePlanlari(int danisanId,int antrenorId);
+
+    void danisanaBeslenmePlaniAta(DanisanaPlanAtaRequest request);
+
 }

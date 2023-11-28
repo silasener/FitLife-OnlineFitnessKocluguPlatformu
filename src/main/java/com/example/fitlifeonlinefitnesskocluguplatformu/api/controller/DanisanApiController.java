@@ -3,10 +3,7 @@ package com.example.fitlifeonlinefitnesskocluguplatformu.api.controller;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.AntrenoreMesajGonderRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanGuncellemeRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaMesajGonderRequest;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.AntrenorEgzersizProgramlari;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Danisan;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.DanisanEgzersizProgramlari;
-import com.example.fitlifeonlinefitnesskocluguplatformu.domain.DanisanGelenKutusu;
+import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.DanisanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -92,7 +89,27 @@ public class DanisanApiController {
         }
     }
 
+    @GetMapping("/beslenmePlanlarimiGoster")
+    public ResponseEntity<?> getBeslenmePlanlarim(@RequestParam Integer danisanId) {
+        try {
+            List<DanisanBeslenmePlani> planlar = danisanService.beslenmePlanlarimiBul(danisanId);
+            return ResponseEntity.ok(planlar);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Beslenme planlarını getirirken bir hata oluştu.");
+        }
+    }
 
+    @GetMapping("/beslenmePlanDetaylari")
+    public ResponseEntity<?> getBeslenmePlanDetaylari(@RequestParam Integer beslenmePlanId) {
+        try {
+            BeslenmePlani beslenmeDetaylari = danisanService.getBeslenmePlaniminDetayi(beslenmePlanId);
+            return ResponseEntity.ok(beslenmeDetaylari);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Beslenme plan detayları getirirken bir hata oluştu. Hata Detayı: " + e.getMessage());
+        }
+    }
 
 
 
