@@ -2,6 +2,7 @@ package com.example.fitlifeonlinefitnesskocluguplatformu.service;
 
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.AntrenoreMesajGonderRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanGuncellemeRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.IlerlemeKaydiRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import org.springframework.stereotype.Component;
 
@@ -35,4 +36,6 @@ public interface DanisanService {
    List<DanisanBeslenmePlani> beslenmePlanlarimiBul(int danisanId);
 
    BeslenmePlani getBeslenmePlaniminDetayi(int beslenmePlanId);
+
+   void danisanIlerlemeKaydiEkleme(IlerlemeKaydiRequest request);
 }

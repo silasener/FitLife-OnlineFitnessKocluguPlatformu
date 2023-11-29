@@ -3,6 +3,7 @@ package com.example.fitlifeonlinefitnesskocluguplatformu.api.controller;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.AntrenoreMesajGonderRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanGuncellemeRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaMesajGonderRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.IlerlemeKaydiRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.DanisanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,7 +135,16 @@ public class DanisanApiController {
         }
     }
 
-
+    @PostMapping("/ilerlemeKaydiEkle")
+    public ResponseEntity<String> ilerlemeKaydiEkle(@RequestBody IlerlemeKaydiRequest ilerlemeKaydiRequest) {
+        try {
+            System.out.println("VKI Değeri: " + ilerlemeKaydiRequest.getVKI());
+            danisanService.danisanIlerlemeKaydiEkleme(ilerlemeKaydiRequest);
+            return ResponseEntity.ok("İlerleme kaydı eklendi.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("İlerleme kaydı eklenirken bir hata oluştu.");
+        }
+    }
 
 
 

@@ -3,6 +3,7 @@ package com.example.fitlifeonlinefitnesskocluguplatformu.service.impl;
 import com.example.fitlifeonlinefitnesskocluguplatformu.EgzersizDurumu;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.AntrenoreMesajGonderRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanGuncellemeRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.IlerlemeKaydiRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.repository.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.DanisanService;
@@ -24,6 +25,7 @@ public class DanisanServiceImpl implements DanisanService {
     private DanisanBeslenmePlaniRepo danisanBeslenmePlaniRepo;
     private BeslenmePlaniRepo beslenmePlaniRepo;
     private SifreSifirlamaMailiRepo sifreSifirlamaMailiRepo;
+    private IlerlemeKaydiRepo ilerlemeKaydiRepo;
 
     @Override
     public boolean danisanKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
@@ -159,6 +161,19 @@ public class DanisanServiceImpl implements DanisanService {
     public BeslenmePlani getBeslenmePlaniminDetayi(int beslenmePlanId) {
         BeslenmePlani beslenmePlaniDetay=beslenmePlaniRepo.findById(beslenmePlanId);
         return beslenmePlaniDetay;
+    }
+
+    @Override
+    public void danisanIlerlemeKaydiEkleme(IlerlemeKaydiRequest request) {
+        Danisan danisan=danisanRepo.findDanisanById(request.getDanisanId());
+        IlerlemeKaydi ilerlemeKaydi=new IlerlemeKaydi();
+        ilerlemeKaydi.setBoy(request.getBoy());
+        ilerlemeKaydi.setKilo(request.getKilo());
+        ilerlemeKaydi.setVKI(request.getVKI());
+        ilerlemeKaydi.setKasKutlesi(request.getKasKutlesi());
+        ilerlemeKaydi.setDanisan(danisan);
+        ilerlemeKaydi.setVucutYagOrani(request.getVucutYagOrani());
+        ilerlemeKaydiRepo.save(ilerlemeKaydi);
     }
 
 
