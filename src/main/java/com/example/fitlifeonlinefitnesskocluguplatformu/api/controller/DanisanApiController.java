@@ -1,9 +1,6 @@
 package com.example.fitlifeonlinefitnesskocluguplatformu.api.controller;
 
-import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.AntrenoreMesajGonderRequest;
-import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanGuncellemeRequest;
-import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaMesajGonderRequest;
-import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.IlerlemeKaydiRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.DanisanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,6 +166,15 @@ public class DanisanApiController {
     }
 
 
+    @PostMapping("/ilerlemeKaydiGuncelle")
+    public ResponseEntity<String> ilerlemeKaydiGuncelle(@RequestBody IlerlemeKaydiGuncelleRequest ilerlemeKaydiGuncelleRequest) {
+        try {
+            danisanService.ilerlemeKaydiGuncelle(ilerlemeKaydiGuncelleRequest);
+            return ResponseEntity.ok("İlerleme kaydı güncellendi.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("İlerleme kaydı güncellenirken bir hata oluştu.");
+        }
+    }
 
 
 

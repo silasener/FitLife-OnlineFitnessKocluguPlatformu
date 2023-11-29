@@ -3,6 +3,7 @@ package com.example.fitlifeonlinefitnesskocluguplatformu.service.impl;
 import com.example.fitlifeonlinefitnesskocluguplatformu.EgzersizDurumu;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.AntrenoreMesajGonderRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanGuncellemeRequest;
+import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.IlerlemeKaydiGuncelleRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.IlerlemeKaydiRequest;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.repository.*;
@@ -187,6 +188,19 @@ public class DanisanServiceImpl implements DanisanService {
     public IlerlemeKaydi getIlerlemeKaydiDetay(int kayitId) {
         IlerlemeKaydi getIlerlemeKaydi=ilerlemeKaydiRepo.findIlerlemeKaydiById(kayitId);
         return getIlerlemeKaydi;
+    }
+
+    @Override
+    public void ilerlemeKaydiGuncelle(IlerlemeKaydiGuncelleRequest request) {
+        Danisan danisan=danisanRepo.findDanisanById(request.getDanisanId());
+        IlerlemeKaydi guncellenecekKayit=ilerlemeKaydiRepo.findIlerlemeKaydiById(request.getId());
+        guncellenecekKayit.setKilo(request.getKilo());
+        guncellenecekKayit.setBoy(request.getBoy());
+        guncellenecekKayit.setDanisan(danisan);
+        guncellenecekKayit.setVki(request.getVki());
+        guncellenecekKayit.setVucutYagOrani(request.getVucutYagOrani());
+        guncellenecekKayit.setKasKutlesi(request.getKasKutlesi());
+        ilerlemeKaydiRepo.save(guncellenecekKayit);
     }
 
 
