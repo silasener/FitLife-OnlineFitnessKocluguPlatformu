@@ -138,13 +138,38 @@ public class DanisanApiController {
     @PostMapping("/ilerlemeKaydiEkle")
     public ResponseEntity<String> ilerlemeKaydiEkle(@RequestBody IlerlemeKaydiRequest ilerlemeKaydiRequest) {
         try {
-            System.out.println("VKI Değeri: " + ilerlemeKaydiRequest.getVKI());
             danisanService.danisanIlerlemeKaydiEkleme(ilerlemeKaydiRequest);
             return ResponseEntity.ok("İlerleme kaydı eklendi.");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("İlerleme kaydı eklenirken bir hata oluştu.");
         }
     }
+
+
+    @GetMapping("/ilerlemeKayitlarim")
+    public ResponseEntity<?> getilerlemeKayitlarim(@RequestParam Integer danisanId) {
+        try {
+            List<IlerlemeKaydi> ilerlemeKaydiLists= danisanService.getIlerlemeKayitlarim(danisanId);
+            return ResponseEntity.ok(ilerlemeKaydiLists);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("İlerleme kayıtlarını  getirirken bir hata oluştu.");
+        }
+    }
+
+    @GetMapping("/ilerlemeKaydiDetaylari")
+    public ResponseEntity<?> getilerlemeKaydiDetay(@RequestParam Integer kayitId) {
+        try {
+            IlerlemeKaydi ilerlemeKaydi= danisanService.getIlerlemeKaydiDetay(kayitId);
+            return ResponseEntity.ok(ilerlemeKaydi);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("İlerleme kaydını  getirirken bir hata oluştu.");
+        }
+    }
+
+
+
 
 
 

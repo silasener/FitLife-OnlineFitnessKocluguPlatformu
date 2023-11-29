@@ -30,8 +30,8 @@ public class IlerlemeKaydi {
     @Column(name = "kasKutlesi")
     private double kasKutlesi;
 
-    @Column(name = "VKI")
-    private double VKI;
+    @Column(name = "vki")
+    private double vki;
 
     @ManyToOne
     @JoinColumn(name = "danisan_id", referencedColumnName = "id")

@@ -14,6 +14,6 @@ public class IlerlemeKaydiRequest {
     private double boy;
     private double vucutYagOrani;
     private double kasKutlesi;
-    private double VKI;
+    private double vki;
     private int danisanId;
 }

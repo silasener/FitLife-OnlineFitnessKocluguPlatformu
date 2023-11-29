@@ -38,4 +38,8 @@ public interface DanisanService {
    BeslenmePlani getBeslenmePlaniminDetayi(int beslenmePlanId);
 
    void danisanIlerlemeKaydiEkleme(IlerlemeKaydiRequest request);
+
+   List<IlerlemeKaydi> getIlerlemeKayitlarim(int danisanId);
+
+    IlerlemeKaydi getIlerlemeKaydiDetay(int kayitId);
 }

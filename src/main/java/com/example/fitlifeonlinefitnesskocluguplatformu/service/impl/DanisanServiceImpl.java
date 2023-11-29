@@ -169,11 +169,24 @@ public class DanisanServiceImpl implements DanisanService {
         IlerlemeKaydi ilerlemeKaydi=new IlerlemeKaydi();
         ilerlemeKaydi.setBoy(request.getBoy());
         ilerlemeKaydi.setKilo(request.getKilo());
-        ilerlemeKaydi.setVKI(request.getVKI());
+        ilerlemeKaydi.setVki(request.getVki());
         ilerlemeKaydi.setKasKutlesi(request.getKasKutlesi());
         ilerlemeKaydi.setDanisan(danisan);
         ilerlemeKaydi.setVucutYagOrani(request.getVucutYagOrani());
         ilerlemeKaydiRepo.save(ilerlemeKaydi);
+    }
+
+    @Override
+    public List<IlerlemeKaydi> getIlerlemeKayitlarim(int danisanId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        List<IlerlemeKaydi> getKayit=ilerlemeKaydiRepo.findIlerlemeKaydiByDanisan(danisan);
+        return getKayit;
+    }
+
+    @Override
+    public IlerlemeKaydi getIlerlemeKaydiDetay(int kayitId) {
+        IlerlemeKaydi getIlerlemeKaydi=ilerlemeKaydiRepo.findIlerlemeKaydiById(kayitId);
+        return getIlerlemeKaydi;
     }
 
 
