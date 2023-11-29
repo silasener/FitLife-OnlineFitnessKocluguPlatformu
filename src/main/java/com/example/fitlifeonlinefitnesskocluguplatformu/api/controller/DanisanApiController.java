@@ -6,10 +6,17 @@ import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.DanisanaMesa
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.DanisanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,10 +27,26 @@ public class DanisanApiController {
     @Autowired
     DanisanService danisanService;
 
+    private static String imageDirectory = System.getProperty("user.dir") + "/images/";
+
     @GetMapping("/info")
     public ResponseEntity<?> getDanisanInfo(@RequestParam String type, @RequestParam String email) {
         Danisan danisan=danisanService.danisanBul(email);
         return ResponseEntity.ok(danisan);
+    }
+
+    @GetMapping("/getImage/{imageName}")
+    public ResponseEntity<?> getImage(@PathVariable String imageName) throws IOException {
+        String imageUzanti=imageName+".png";
+        Path imagePath = Paths.get(imageDirectory, imageUzanti);
+        try {
+            Resource resource=new UrlResource(imagePath.toUri());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/guncelleDanisan")

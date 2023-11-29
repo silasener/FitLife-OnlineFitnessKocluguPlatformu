@@ -4,11 +4,21 @@ import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.GirisRequest
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AdminService;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AntrenorService;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.DanisanService;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -31,10 +41,15 @@ public class FitLifeApiController {
             @RequestPart("cinsiyet") String cinsiyet, @RequestPart("dogumTarihi") String dogumTarihi, @RequestPart("telefonNumarasi") String telefonNumarasi,
             @RequestPart("email") String email, @RequestPart("sifre") String sifre, @RequestPart("profilFotografi") MultipartFile profilFotografi) {
 
+        ResponseEntity<?> imageResponse =uploadImage(profilFotografi, email);
+        if (imageResponse.getStatusCode() != HttpStatus.CREATED) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Profil fotoğrafı yüklenemedi!");
+        }
+        String dosyaAdi = (String) imageResponse.getBody();
         if (kullaniciTuru.equals("antrenor")) {
-            antrenorService.antrenorKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,profilFotografi.getName());
+            antrenorService.antrenorKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,dosyaAdi);
         } else if (kullaniciTuru.equals("danisan")) {
-            danisanService.danisanKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,profilFotografi.getName());
+            danisanService.danisanKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,dosyaAdi);
         }
 
         String sonuc = "Kullanıcı Türü: " + kullaniciTuru + ", Ad: " + ad + ", Soyad: " + soyad;
@@ -75,6 +90,29 @@ public class FitLifeApiController {
             return ResponseEntity.ok("Şifre sıfırlama başarısız");
         }
     }
+
+
+        private static String imageDirectory = System.getProperty("user.dir") + "/images/";
+
+        public static ResponseEntity<?> uploadImage(@RequestParam("imageFile") MultipartFile file,
+                                                    @RequestParam("imageName") String name) {
+            makeDirectoryIfNotExist(imageDirectory);
+            Path fileNamePath = Paths.get(imageDirectory,
+                    name.concat(".").concat(FilenameUtils.getExtension(file.getOriginalFilename())));
+            try {
+                Files.write(fileNamePath, file.getBytes());
+                return new ResponseEntity<>(name, HttpStatus.CREATED);
+            } catch (IOException ex) {
+                return new ResponseEntity<>("Image is not uploaded", HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        private static void makeDirectoryIfNotExist(String imageDirectory) {
+            File directory = new File(imageDirectory);
+            if (!directory.exists()) {
+                directory.mkdir();
+            }
+        }
 
 
 }

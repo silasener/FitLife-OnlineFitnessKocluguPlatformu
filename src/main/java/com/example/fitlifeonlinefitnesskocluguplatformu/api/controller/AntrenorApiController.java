@@ -4,10 +4,18 @@ import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.*;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AntrenorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -17,10 +25,26 @@ public class AntrenorApiController {
     @Autowired
     private AntrenorService antrenorService;
 
+    private static String imageDirectory = System.getProperty("user.dir") + "/images/";
+
     @GetMapping("/info")
     public ResponseEntity<?> getAntrenorInfo(@RequestParam String type, @RequestParam String email) {
         Antrenor antrenor=antrenorService.antrenorBul(email);
         return ResponseEntity.ok(antrenor);
+    }
+
+    @GetMapping("/getImage/{imageName}")
+    public ResponseEntity<?> getImage(@PathVariable String imageName) throws IOException {
+        String imageUzanti=imageName+".png";
+        Path imagePath = Paths.get(imageDirectory, imageUzanti);
+        try {
+            Resource resource=new UrlResource(imagePath.toUri());
+         return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/antrenorGuncelle")
@@ -30,7 +54,6 @@ public class AntrenorApiController {
                                               @RequestPart("telefonNumarasi") String telefonNumarasi,
                                               @RequestPart("email") String email,
                                               @RequestPart("sifre") String sifre) {
-
         antrenorService.profilimiGuncelle(id, ad, soyad, telefonNumarasi, email, sifre);
         return ResponseEntity.ok("ok");
     }
