@@ -37,9 +37,10 @@ public class FitLifeApiController {
 
 
     @PostMapping("/kayitOl")
-    public ResponseEntity<String> kayitOl(@RequestPart("kullaniciTuru") String kullaniciTuru, @RequestPart("ad") String ad, @RequestPart("soyad") String soyad,
+    public ResponseEntity<?> kayitOl(@RequestPart("kullaniciTuru") String kullaniciTuru, @RequestPart("ad") String ad, @RequestPart("soyad") String soyad,
             @RequestPart("cinsiyet") String cinsiyet, @RequestPart("dogumTarihi") String dogumTarihi, @RequestPart("telefonNumarasi") String telefonNumarasi,
             @RequestPart("email") String email, @RequestPart("sifre") String sifre, @RequestPart("profilFotografi") MultipartFile profilFotografi) {
+        boolean kayitVarMi=false;
 
         ResponseEntity<?> imageResponse =uploadImage(profilFotografi, email);
         if (imageResponse.getStatusCode() != HttpStatus.CREATED) {
@@ -47,13 +48,17 @@ public class FitLifeApiController {
         }
         String dosyaAdi = (String) imageResponse.getBody();
         if (kullaniciTuru.equals("antrenor")) {
-            antrenorService.antrenorKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,dosyaAdi);
+            kayitVarMi=antrenorService.antrenorKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,dosyaAdi);
         } else if (kullaniciTuru.equals("danisan")) {
-            danisanService.danisanKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,dosyaAdi);
+            kayitVarMi=danisanService.danisanKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,dosyaAdi);
         }
 
-        String sonuc = "Kullanıcı Türü: " + kullaniciTuru + ", Ad: " + ad + ", Soyad: " + soyad;
-        return ResponseEntity.ok("Başarılı! " + sonuc);
+        if (kayitVarMi) {
+            String sonuc = "Kullanıcı Türü: " + kullaniciTuru + ", Ad: " + ad + ", Soyad: " + soyad;
+            return ResponseEntity.ok("Başarılı! " + sonuc);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Hata: Kayıt başarısız!");
+        }
     }
 
 
@@ -79,15 +84,15 @@ public class FitLifeApiController {
     }
 
     @PostMapping("/sifreSifirla")
-    public ResponseEntity<String> sifreSifirla(@RequestBody GirisRequest kullaniciVerileri) {
-        if(adminService.adminSifreDegistir(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre())){
+    public ResponseEntity<?> sifreSifirla(@RequestBody GirisRequest kullaniciVerileri) {
+        if(adminService.adminSifreDegistir(kullaniciVerileri.getEmail())){
             return ResponseEntity.ok("Admin şifre sıfırlama başarılı");
-        }else if(antrenorService.antrenorSifreDegistir(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre())){
+        }else if(antrenorService.antrenorSifreDegistir(kullaniciVerileri.getEmail())){
             return ResponseEntity.ok("Antrenör şifre sıfırlama başarılı");
-        }else if(danisanService.danisanSifreDegistir(kullaniciVerileri.getEmail(),kullaniciVerileri.getSifre())){
+        }else if(danisanService.danisanSifreDegistir(kullaniciVerileri.getEmail())){
             return ResponseEntity.ok("Danışan şifre sıfırlama başarılı");
         }else{
-            return ResponseEntity.ok("Şifre sıfırlama başarısız");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Şifre sıfırlama başarısız");
         }
     }
 

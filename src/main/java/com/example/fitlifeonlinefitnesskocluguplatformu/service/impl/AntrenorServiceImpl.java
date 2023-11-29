@@ -31,16 +31,17 @@ public class AntrenorServiceImpl implements AntrenorService {
     private GunlukOgunlerRepo gunlukOgunlerRepo;
     private BeslenmePlaniRepo beslenmePlaniRepo;
     private DanisanBeslenmePlaniRepo danisanBeslenmePlaniRepo;
+    private SifreSifirlamaMailiRepo sifreSifirlamaMailiRepo;
 
     @Override
-    public void antrenorKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
+    public boolean antrenorKaydiOlustur(String ad, String soyad, String cinsiyet, LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre, String dosyaURL) {
         boolean kayitVarMi=false;
         List<Antrenor> antrenorList=antrenorRepo.findAll();
         for (Antrenor antrenor:antrenorList) {
             if(antrenor.getEmail().equals(email)){
                 System.out.println("Hata: Bu email adresi zaten kullanımda.");
                 kayitVarMi=true;
-                return; // Metod sonlanır
+                return false; // Metod sonlanır
             }
         }
 
@@ -56,7 +57,9 @@ public class AntrenorServiceImpl implements AntrenorService {
             yeniAntrenor.setProfilFotografi(dosyaURL);
             antrenorRepo.save(yeniAntrenor);
             System.out.println("Kayıt Başarılı!");
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -71,12 +74,17 @@ public class AntrenorServiceImpl implements AntrenorService {
     }
 
     @Override
-    public boolean antrenorSifreDegistir(String email, String yeniSifre) {
+    public boolean antrenorSifreDegistir(String email) {
         List<Antrenor> antrenorList=antrenorRepo.findAll();
         for (Antrenor antrenor:antrenorList) {
             if(antrenor.getEmail().equals(email)){
+                String yeniSifre="antrenor"+antrenor.getId()+"yeniSifre";
                 antrenor.setSifre(yeniSifre);
                 antrenorRepo.save(antrenor);
+                SifreSifirlamaMaili sifreSifirlamaMaili=new SifreSifirlamaMaili();
+                sifreSifirlamaMaili.setEmail(email);
+                sifreSifirlamaMaili.setYeniSifre(yeniSifre);
+                sifreSifirlamaMailiRepo.save(sifreSifirlamaMaili);
                 return true;
             }
         }

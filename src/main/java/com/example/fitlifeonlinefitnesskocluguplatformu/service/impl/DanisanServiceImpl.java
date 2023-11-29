@@ -23,16 +23,17 @@ public class DanisanServiceImpl implements DanisanService {
     private DanisanGelenKutusuRepo danisanGelenKutusuRepo;
     private DanisanBeslenmePlaniRepo danisanBeslenmePlaniRepo;
     private BeslenmePlaniRepo beslenmePlaniRepo;
+    private SifreSifirlamaMailiRepo sifreSifirlamaMailiRepo;
 
     @Override
-    public void danisanKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
+    public boolean danisanKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
         boolean kayitVarMi=false;
         List<Danisan> danisanList=danisanRepo.findAll();
         for (Danisan danisan:danisanList) {
             if(danisan.getEmail().equals(email)){
                 System.out.println("Hata: Bu email adresi zaten kullanımda.");
                 kayitVarMi=true;
-                return; // Metod sonlanır
+                return false; // Metod sonlanır
             }
         }
 
@@ -48,7 +49,9 @@ public class DanisanServiceImpl implements DanisanService {
             yeniDanisan.setSifre(sifre);
             danisanRepo.save(yeniDanisan);
             System.out.println("Kayıt Başarılı!");
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -63,12 +66,17 @@ public class DanisanServiceImpl implements DanisanService {
     }
 
     @Override
-    public boolean danisanSifreDegistir(String email, String yeniSifre) {
+    public boolean danisanSifreDegistir(String email) {
         List<Danisan> danisanList=danisanRepo.findAll();
         for (Danisan danisan:danisanList) {
             if(danisan.getEmail().equals(email)){
-                danisan.setSifre(yeniSifre);
+                String yeniSifre="danisan"+danisan.getId()+"yeniSifre";
+               danisan.setSifre(yeniSifre);
                 danisanRepo.save(danisan);
+                SifreSifirlamaMaili sifreSifirlamaMaili=new SifreSifirlamaMaili();
+                sifreSifirlamaMaili.setEmail(email);
+                sifreSifirlamaMaili.setYeniSifre(yeniSifre);
+                sifreSifirlamaMailiRepo.save(sifreSifirlamaMaili);
                 return true;
             }
         }

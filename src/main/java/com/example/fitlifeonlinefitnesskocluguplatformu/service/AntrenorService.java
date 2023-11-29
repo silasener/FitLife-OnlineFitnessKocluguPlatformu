@@ -12,11 +12,11 @@ import java.util.List;
 
 @Component
 public interface AntrenorService {
-    void antrenorKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL);
+    boolean antrenorKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL);
 
     Antrenor antrenorGirisi(String email, String sifre);
 
-    boolean antrenorSifreDegistir(String email,String yeniSifre);
+    boolean antrenorSifreDegistir(String email);
 
     Antrenor antrenorBul(String email);
 

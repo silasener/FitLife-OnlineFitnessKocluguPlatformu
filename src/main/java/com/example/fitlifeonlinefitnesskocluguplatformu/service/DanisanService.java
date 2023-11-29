@@ -10,11 +10,11 @@ import java.util.List;
 
 @Component
 public interface DanisanService {
-    void danisanKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL);
+    boolean danisanKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL);
 
     Danisan danisanGirisi(String email, String sifre);
 
-    boolean danisanSifreDegistir(String email,String yeniSifre);
+    boolean danisanSifreDegistir(String email);
 
     Danisan danisanBul(String email);
 

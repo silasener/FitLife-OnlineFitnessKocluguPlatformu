@@ -10,7 +10,7 @@ public interface AdminService {
 
     Admin adminGirisi(String email, String sifre);
 
-    boolean adminSifreDegistir(String email,String yeniSifre);
+    boolean adminSifreDegistir(String email);
 
     Admin adminBul(String email);
 

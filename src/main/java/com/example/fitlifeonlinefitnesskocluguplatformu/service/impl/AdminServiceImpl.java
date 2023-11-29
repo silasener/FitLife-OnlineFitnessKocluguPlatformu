@@ -3,9 +3,11 @@ package com.example.fitlifeonlinefitnesskocluguplatformu.service.impl;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Admin;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Antrenor;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Danisan;
+import com.example.fitlifeonlinefitnesskocluguplatformu.domain.SifreSifirlamaMaili;
 import com.example.fitlifeonlinefitnesskocluguplatformu.repository.AdminRepo;
 import com.example.fitlifeonlinefitnesskocluguplatformu.repository.AntrenorRepo;
 import com.example.fitlifeonlinefitnesskocluguplatformu.repository.DanisanRepo;
+import com.example.fitlifeonlinefitnesskocluguplatformu.repository.SifreSifirlamaMailiRepo;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class AdminServiceImpl implements AdminService {
     private AdminRepo adminRepo;
     private DanisanRepo danisanRepo;
     private AntrenorRepo antrenorRepo;
+    private SifreSifirlamaMailiRepo sifreSifirlamaMailiRepo;
 
     @Override
     public Admin adminGirisi(String email, String sifre) {
@@ -31,12 +34,17 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean adminSifreDegistir(String email, String yeniSifre) {
+    public boolean adminSifreDegistir(String email) {
         List<Admin> adminList=adminRepo.findAll();
         for (Admin admin:adminList) {
             if(admin.getEmail().equals(email)){
+                String yeniSifre="adminYeniSifre";
                 admin.setSifre(yeniSifre);
                 adminRepo.save(admin);
+                SifreSifirlamaMaili sifreSifirlamaMaili=new SifreSifirlamaMaili();
+                sifreSifirlamaMaili.setEmail(email);
+                sifreSifirlamaMaili.setYeniSifre(yeniSifre);
+                sifreSifirlamaMailiRepo.save(sifreSifirlamaMaili);
                 return true;
             }
         }
