@@ -4,12 +4,8 @@ import com.example.fitlifeonlinefitnesskocluguplatformu.api.request.GirisRequest
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AdminService;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AntrenorService;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.DanisanService;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,21 +36,26 @@ public class FitLifeApiController {
     public ResponseEntity<?> kayitOl(@RequestPart("kullaniciTuru") String kullaniciTuru, @RequestPart("ad") String ad, @RequestPart("soyad") String soyad,
             @RequestPart("cinsiyet") String cinsiyet, @RequestPart("dogumTarihi") String dogumTarihi, @RequestPart("telefonNumarasi") String telefonNumarasi,
             @RequestPart("email") String email, @RequestPart("sifre") String sifre, @RequestPart("profilFotografi") MultipartFile profilFotografi) {
-        boolean kayitVarMi=false;
+        boolean kayitOlusturuldu=false;
+        boolean mailKullaniliyor=adminService.mailKullaniliyorMu(email);
+        String dosyaAdi=null;
 
-        ResponseEntity<?> imageResponse =uploadImage(profilFotografi, email);
-        if (imageResponse.getStatusCode() != HttpStatus.CREATED) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Profil fotoğrafı yüklenemedi!");
-        }
-        String dosyaAdi = (String) imageResponse.getBody();
-        if (kullaniciTuru.equals("antrenor")) {
-            kayitVarMi=antrenorService.antrenorKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,dosyaAdi);
-        } else if (kullaniciTuru.equals("danisan")) {
-            kayitVarMi=danisanService.danisanKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,dosyaAdi);
+        if(!mailKullaniliyor){
+            ResponseEntity<?> imageResponse =uploadImage(profilFotografi, email);
+            if (imageResponse.getStatusCode() != HttpStatus.CREATED) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Profil fotoğrafı yüklenemedi!");
+            }
+             dosyaAdi = (String) imageResponse.getBody();
         }
 
-        if (kayitVarMi) {
-            String sonuc = "Kullanıcı Türü: " + kullaniciTuru + ", Ad: " + ad + ", Soyad: " + soyad;
+        if (kullaniciTuru.equals("antrenor") && (!mailKullaniliyor)) {
+            kayitOlusturuldu=antrenorService.antrenorKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,dosyaAdi);
+        } else if (kullaniciTuru.equals("danisan") && (!mailKullaniliyor)) {
+            kayitOlusturuldu=danisanService.danisanKaydiOlustur(ad,soyad,cinsiyet, LocalDate.parse(dogumTarihi),telefonNumarasi,email,sifre,dosyaAdi);
+        }
+
+        String sonuc = "Kullanıcı Türü: " + kullaniciTuru + ", Ad: " + ad + ", Soyad: " + soyad;
+        if (kayitOlusturuldu) {
             return ResponseEntity.ok("Başarılı! " + sonuc);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Hata: Kayıt başarısız!");

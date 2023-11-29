@@ -116,5 +116,22 @@ public class AdminServiceImpl implements AdminService {
         antrenorRepo.save(guncelAntrenor);
     }
 
+    @Override
+    public boolean mailKullaniliyorMu(String email) {
+        List<Danisan>danisanList=danisanRepo.findAll();
+        List<Antrenor> antrenorList=antrenorRepo.findAll();
+        for (Antrenor antrenor: antrenorList) {
+            if(antrenor.getEmail().equals(email)){
+                return true;
+            }
+        }
+        for (Danisan danisan: danisanList) {
+            if(danisan.getEmail().equals(email)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }

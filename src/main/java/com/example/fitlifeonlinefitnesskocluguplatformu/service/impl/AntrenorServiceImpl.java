@@ -35,17 +35,6 @@ public class AntrenorServiceImpl implements AntrenorService {
 
     @Override
     public boolean antrenorKaydiOlustur(String ad, String soyad, String cinsiyet, LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre, String dosyaURL) {
-        boolean kayitVarMi=false;
-        List<Antrenor> antrenorList=antrenorRepo.findAll();
-        for (Antrenor antrenor:antrenorList) {
-            if(antrenor.getEmail().equals(email)){
-                System.out.println("Hata: Bu email adresi zaten kullanımda.");
-                kayitVarMi=true;
-                return false; // Metod sonlanır
-            }
-        }
-
-        if(!kayitVarMi){
             Antrenor yeniAntrenor=new Antrenor();
             yeniAntrenor.setAd(ad);
             yeniAntrenor.setSoyad(soyad);
@@ -58,8 +47,6 @@ public class AntrenorServiceImpl implements AntrenorService {
             antrenorRepo.save(yeniAntrenor);
             System.out.println("Kayıt Başarılı!");
             return true;
-        }
-        return false;
     }
 
     @Override

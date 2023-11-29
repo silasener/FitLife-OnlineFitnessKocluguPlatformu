@@ -25,4 +25,6 @@ public interface AdminService {
     void danisanEtkinlestir(Danisan danisan);
 
     void antrenorEtkinlestir(Antrenor antrenor);
+
+    boolean mailKullaniliyorMu(String email);
 }
