@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Table(name = "ilerlemeKaydi")
 @Entity
 @AllArgsConstructor
@@ -36,4 +38,7 @@ public class IlerlemeKaydi {
     @ManyToOne
     @JoinColumn(name = "danisan_id", referencedColumnName = "id")
     private Danisan danisan;
+
+    @Column(name = "kayitTarihi")
+    private LocalDate kayitTarihi;
 }

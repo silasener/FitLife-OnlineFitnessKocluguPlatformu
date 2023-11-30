@@ -45,4 +45,8 @@ public interface DanisanService {
     IlerlemeKaydi getIlerlemeKaydiDetay(int kayitId);
 
     void ilerlemeKaydiGuncelle(IlerlemeKaydiGuncelleRequest request);
+
+    List<IlerlemeKaydi> danisanGunlukIlerlemeKaydiRaporu(int danisanId, LocalDate gunTarih);
+
+    List<IlerlemeKaydi> danisanHaftalikIlerlemeKaydiRaporu(int danisanId, LocalDate baslangicTarih);
 }

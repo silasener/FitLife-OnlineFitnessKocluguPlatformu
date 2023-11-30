@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @AllArgsConstructor
@@ -174,6 +176,7 @@ public class DanisanServiceImpl implements DanisanService {
         ilerlemeKaydi.setKasKutlesi(request.getKasKutlesi());
         ilerlemeKaydi.setDanisan(danisan);
         ilerlemeKaydi.setVucutYagOrani(request.getVucutYagOrani());
+        ilerlemeKaydi.setKayitTarihi(LocalDate.now());
         ilerlemeKaydiRepo.save(ilerlemeKaydi);
     }
 
@@ -200,7 +203,25 @@ public class DanisanServiceImpl implements DanisanService {
         guncellenecekKayit.setVki(request.getVki());
         guncellenecekKayit.setVucutYagOrani(request.getVucutYagOrani());
         guncellenecekKayit.setKasKutlesi(request.getKasKutlesi());
+        guncellenecekKayit.setKayitTarihi(LocalDate.now());
         ilerlemeKaydiRepo.save(guncellenecekKayit);
+    }
+
+    @Override
+    public List<IlerlemeKaydi> danisanGunlukIlerlemeKaydiRaporu(int danisanId, LocalDate gunTarih) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        List<IlerlemeKaydi> danisanGunlukKayit=ilerlemeKaydiRepo.findIlerlemeKaydiByDanisanByKayitTarihi(danisan,gunTarih);
+        Collections.sort(danisanGunlukKayit, Comparator.comparing(IlerlemeKaydi::getKayitTarihi));
+        return danisanGunlukKayit;
+    }
+
+    @Override
+    public List<IlerlemeKaydi> danisanHaftalikIlerlemeKaydiRaporu(int danisanId, LocalDate baslangicTarihi) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        LocalDate bitisTarihi = baslangicTarihi.minusDays(6); //1 haftalık süreç elde edilir
+        List<IlerlemeKaydi> danisanHaftalikKayit = ilerlemeKaydiRepo.findIlerlemeKaydiByDanisanAndTarihAraligi(danisan, bitisTarihi, baslangicTarihi);
+        Collections.sort(danisanHaftalikKayit, Comparator.comparing(IlerlemeKaydi::getKayitTarihi));
+        return danisanHaftalikKayit;
     }
 
 

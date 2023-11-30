@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -175,6 +176,20 @@ public class DanisanApiController {
             return ResponseEntity.status(500).body("İlerleme kaydı güncellenirken bir hata oluştu.");
         }
     }
+
+    @GetMapping("/gunlukIlerlemeKaydiRaporlama")
+    public ResponseEntity<List<IlerlemeKaydi>> gunlukIlerlemeKaydiRaporlama(@RequestParam int danisanId, @RequestParam LocalDate gunTarih) {
+        List<IlerlemeKaydi> danisaninIlerlemeKayitlari = danisanService.danisanGunlukIlerlemeKaydiRaporu(danisanId,gunTarih);
+        return ResponseEntity.ok(danisaninIlerlemeKayitlari);
+    }
+
+
+    @GetMapping("/haftalikIlerlemeKaydiRaporlama")
+    public ResponseEntity<List<IlerlemeKaydi>> haftalikIlerlemeKaydiRaporlama(@RequestParam int danisanId, @RequestParam LocalDate gunTarih) {
+        List<IlerlemeKaydi> danisaninIlerlemeKayitlari = danisanService.danisanHaftalikIlerlemeKaydiRaporu(danisanId,gunTarih);
+        return ResponseEntity.ok(danisaninIlerlemeKayitlari);
+    }
+
 
 
 
