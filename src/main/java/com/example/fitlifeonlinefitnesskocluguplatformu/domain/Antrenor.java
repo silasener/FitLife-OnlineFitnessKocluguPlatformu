@@ -47,4 +47,12 @@ public class Antrenor {
 
     @Column(name = "aktif_mi")
     private boolean aktifMi = true;
+
+    @Column(name = "baslangicKontenjani")
+    private int baslangicKontenjani;
+
+    @Column(name = "kalanKontenjan")
+    private int kalanKontenjan;
+
+
 }

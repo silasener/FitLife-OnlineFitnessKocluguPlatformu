@@ -26,4 +26,10 @@ public class DanisanAntrenorEslesmesi {
     @ManyToOne
     @JoinColumn(name = "antrenor_id", referencedColumnName = "id")
     private Antrenor antrenor;
+
+    @ManyToOne
+    @JoinColumn(name = "hedef_id", referencedColumnName = "id")
+    private Deneyimler deneyim;
+
+
 }

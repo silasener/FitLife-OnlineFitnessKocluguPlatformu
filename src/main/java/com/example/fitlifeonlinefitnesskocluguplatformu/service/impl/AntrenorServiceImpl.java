@@ -44,6 +44,8 @@ public class AntrenorServiceImpl implements AntrenorService {
             yeniAntrenor.setEmail(email);
             yeniAntrenor.setSifre(sifre);
             yeniAntrenor.setProfilFotografi(dosyaURL);
+            yeniAntrenor.setBaslangicKontenjani(5);
+            yeniAntrenor.setKalanKontenjan(5);
             antrenorRepo.save(yeniAntrenor);
             System.out.println("Kayıt Başarılı!");
             return true;

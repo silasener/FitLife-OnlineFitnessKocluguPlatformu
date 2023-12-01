@@ -96,5 +96,11 @@ public class AdminApiController {
         return ResponseEntity.ok("Antrenör etkinleştirildi.");
     }
 
+    @PostMapping("/danisanAntrenorEslesmesiAtamaYap")
+    public ResponseEntity<?> danisanAntrenorEslesmesiAtamaYap() {
+        adminService.danisanAntrenorEslesmeAtamasi();
+        return ResponseEntity.ok("Atama Yapıldı!");
+    }
+
 
 }
