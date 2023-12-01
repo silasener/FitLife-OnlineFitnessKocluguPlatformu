@@ -191,7 +191,38 @@ public class DanisanApiController {
     }
 
 
+    @GetMapping("/danisanHedefleri")
+    public ResponseEntity<List<DanisanHedefleri>> getDanisanHedefleri(@RequestParam Integer  danisanId) {
+        List<DanisanHedefleri> danisanHedefleri = danisanService.getDanisanHedefleri(danisanId);
+        return ResponseEntity.ok(danisanHedefleri);
+    }
 
+    @GetMapping("/danisaninSahipOlmadigiHedefler")
+    public ResponseEntity<List<Deneyimler>> getDanisaninSahipOlmadigiHedefler(@RequestParam Integer  danisanId) {
+        List<Deneyimler> danisaninSahipOlmadigiHedefler= danisanService.getDanisaninSahipOlmadigiHedefler(danisanId);
+        return ResponseEntity.ok(danisaninSahipOlmadigiHedefler);
+    }
+
+
+    @PostMapping("/hedefEkle/{danisanId}/{hedefId}")
+    public ResponseEntity<String> hedefEkle(@PathVariable int danisanId, @PathVariable int hedefId) {
+        try {
+            danisanService.hedefEkle(danisanId, hedefId);
+            return ResponseEntity.ok("Hedef eklendi.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hedef eklenirken bir hata oluştu.");
+        }
+    }
+
+    @DeleteMapping("/hedefSil/{danisanId}/{hedefId}")
+    public ResponseEntity<String> hedefSil(@PathVariable int danisanId, @PathVariable int hedefId) {
+        try {
+            danisanService.hedefSil(danisanId,hedefId);
+            return ResponseEntity.ok("Hedef silindi.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hedef silinirken bir hata oluştu.");
+        }
+    }
 
 
 }

@@ -12,9 +12,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -29,6 +31,8 @@ public class DanisanServiceImpl implements DanisanService {
     private BeslenmePlaniRepo beslenmePlaniRepo;
     private SifreSifirlamaMailiRepo sifreSifirlamaMailiRepo;
     private IlerlemeKaydiRepo ilerlemeKaydiRepo;
+    private DanisanHedefleriRepo danisanHedefleriRepo;
+    private DeneyimlerRepo deneyimlerRepo;
 
     @Override
     public boolean danisanKaydiOlustur(String ad, String soyad,  String cinsiyet,LocalDate dogumTarihi, String telefonNumarasi, String email, String sifre,String dosyaURL) {
@@ -222,6 +226,49 @@ public class DanisanServiceImpl implements DanisanService {
         List<IlerlemeKaydi> danisanHaftalikKayit = ilerlemeKaydiRepo.findIlerlemeKaydiByDanisanAndTarihAraligi(danisan, bitisTarihi, baslangicTarihi);
         Collections.sort(danisanHaftalikKayit, Comparator.comparing(IlerlemeKaydi::getKayitTarihi));
         return danisanHaftalikKayit;
+    }
+
+    @Override
+    public List<DanisanHedefleri> getDanisanHedefleri(int danisanId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        List<DanisanHedefleri> danisanHedefList=danisanHedefleriRepo.findDanisanHedefleriByDanisan(danisan);
+        return danisanHedefList;
+    }
+
+    @Override
+    public List<Deneyimler> deneyimList() {
+        return deneyimlerRepo.findAll();
+    }
+
+    @Override
+    public List<Deneyimler> getDanisaninSahipOlmadigiHedefler(int danisanId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        List<DanisanHedefleri> danisanHedefleriList=danisanHedefleriRepo.findDanisanHedefleriByDanisan(danisan);
+        List<Integer> danisaninHedefId=new ArrayList<>();
+        List<Deneyimler> sahipOlunmayanDeneyimler=new ArrayList<>();
+        for (DanisanHedefleri danisanHedefi:danisanHedefleriList) {
+            danisaninHedefId.add(danisanHedefi.getDeneyim().getId());
+        }
+        sahipOlunmayanDeneyimler=deneyimList().stream().filter(deneyimler -> !danisaninHedefId.contains(deneyimler.getId())).collect(Collectors.toList());
+        return sahipOlunmayanDeneyimler;
+    }
+
+    @Override
+    public void hedefEkle(int danisanId, int hedefId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        Deneyimler hedef=deneyimlerRepo.findDeneyimlerById(hedefId);
+        DanisanHedefleri danisanHedefleri=new DanisanHedefleri();
+        danisanHedefleri.setDeneyim(hedef);
+        danisanHedefleri.setDanisan(danisan);
+        danisanHedefleriRepo.save(danisanHedefleri);
+    }
+
+    @Override
+    public void hedefSil(int danisanId, int hedefId) {
+        Danisan danisan=danisanRepo.findDanisanById(danisanId);
+        Deneyimler hedef=deneyimlerRepo.findDeneyimlerById(hedefId);
+        DanisanHedefleri hedefim=danisanHedefleriRepo.findDanisanHedefleriByDanisanAndDeneyim(danisan,hedef);
+        danisanHedefleriRepo.delete(hedefim);
     }
 
 

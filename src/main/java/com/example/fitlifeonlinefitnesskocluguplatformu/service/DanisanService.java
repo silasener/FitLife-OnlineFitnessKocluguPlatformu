@@ -49,4 +49,14 @@ public interface DanisanService {
     List<IlerlemeKaydi> danisanGunlukIlerlemeKaydiRaporu(int danisanId, LocalDate gunTarih);
 
     List<IlerlemeKaydi> danisanHaftalikIlerlemeKaydiRaporu(int danisanId, LocalDate baslangicTarih);
+
+    List<DanisanHedefleri> getDanisanHedefleri(int danisanId);
+
+    List<Deneyimler> deneyimList();
+
+    List<Deneyimler> getDanisaninSahipOlmadigiHedefler(int danisanId);
+
+    void hedefEkle(int danisanId, int hedefId);
+
+    void hedefSil(int danisanId, int hedefId);
 }
