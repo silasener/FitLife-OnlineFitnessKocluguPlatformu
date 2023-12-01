@@ -132,7 +132,7 @@ public class AdminServiceImpl implements AdminService {
         return false;
     }
 
-    public void danisanAntrenorEslesmeAtamasi() {
+    public List<DanisanAntrenorEslesmesi> danisanAntrenorEslesmeAtamasi() {
         List<Integer> deneyimIdList = Arrays.asList(1, 2, 3, 4);
 
         for (Integer deneyimId : deneyimIdList) {
@@ -162,6 +162,7 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
+        return danisanAntrenorEslesmesiRepo.findAll();
     }
 
 

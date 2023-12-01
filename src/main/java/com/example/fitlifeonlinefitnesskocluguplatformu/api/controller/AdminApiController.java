@@ -3,6 +3,7 @@ package com.example.fitlifeonlinefitnesskocluguplatformu.api.controller;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Admin;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Antrenor;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Danisan;
+import com.example.fitlifeonlinefitnesskocluguplatformu.domain.DanisanAntrenorEslesmesi;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AdminService;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.AntrenorService;
 import com.example.fitlifeonlinefitnesskocluguplatformu.service.DanisanService;
@@ -98,8 +99,8 @@ public class AdminApiController {
 
     @PostMapping("/danisanAntrenorEslesmesiAtamaYap")
     public ResponseEntity<?> danisanAntrenorEslesmesiAtamaYap() {
-        adminService.danisanAntrenorEslesmeAtamasi();
-        return ResponseEntity.ok("Atama Yapıldı!");
+        List<DanisanAntrenorEslesmesi> eslesmeList=adminService.danisanAntrenorEslesmeAtamasi();
+        return ResponseEntity.ok(eslesmeList);
     }
 
 

@@ -3,7 +3,10 @@ package com.example.fitlifeonlinefitnesskocluguplatformu.service;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Admin;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Antrenor;
 import com.example.fitlifeonlinefitnesskocluguplatformu.domain.Danisan;
+import com.example.fitlifeonlinefitnesskocluguplatformu.domain.DanisanAntrenorEslesmesi;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public interface AdminService {
@@ -28,5 +31,5 @@ public interface AdminService {
 
     boolean mailKullaniliyorMu(String email);
 
-    void danisanAntrenorEslesmeAtamasi();
+    List<DanisanAntrenorEslesmesi> danisanAntrenorEslesmeAtamasi();
 }
