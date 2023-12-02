@@ -14,7 +14,7 @@ public interface AntrenorDeneyimleriRepo extends JpaRepository<AntrenorDeneyimle
 
     List<AntrenorDeneyimleri> findAntrenorDeneyimleriByAntrenor(Antrenor antrenor);
 
-    @Query("SELECT ad.antrenor FROM AntrenorDeneyimleri ad WHERE ad.deneyim.id = :deneyimId AND ad.uzmanlikAlaniMi = true AND ad.antrenor.kalanKontenjan>0")
+    @Query("SELECT ad.antrenor FROM AntrenorDeneyimleri ad WHERE ad.deneyim.id = :deneyimId AND ad.uzmanlikAlaniMi = true AND ad.antrenor.kalanKontenjan>0 AND ad.antrenor.aktifMi= true")
     List<Antrenor> findAntrenorByDeneyim_Id(int deneyimId);
 
 

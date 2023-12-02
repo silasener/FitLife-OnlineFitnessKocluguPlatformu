@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Service
@@ -138,6 +139,7 @@ public class AdminServiceImpl implements AdminService {
         for (Integer deneyimId : deneyimIdList) {
             List<Danisan> danisanList = danisanHedefleriRepo.findDanisanByDeneyim_Id(deneyimId);
             List<Antrenor> antrenorList = antrenorDeneyimleriRepo.findAntrenorByDeneyim_Id(deneyimId);
+            Deneyimler deneyim=deneyimlerRepo.findDeneyimlerById(deneyimId);
 
             for (Danisan danisan : danisanList) {
                 Antrenor uygunAntrenor = antrenorList
@@ -146,11 +148,16 @@ public class AdminServiceImpl implements AdminService {
                         .findFirst()
                         .orElse(null);
 
+                DanisanAntrenorEslesmesi danisanAntrenorHedefKaydi=danisanAntrenorEslesmesiRepo.findByDanisanAndDeneyim(danisan,deneyim);
+
+                if(Objects.nonNull(danisanAntrenorHedefKaydi)){
+                    uygunAntrenor=null;
+                }
+
                 if (uygunAntrenor != null) {
                     System.out.println("Danışan " + danisan.getId() + " ile Antrenör " + uygunAntrenor.getId() + " eşleştirildi.");
                     uygunAntrenor.setKalanKontenjan(uygunAntrenor.getKalanKontenjan() - 1);
                     antrenorRepo.save(uygunAntrenor);
-                    Deneyimler deneyim=deneyimlerRepo.findDeneyimlerById(deneyimId);
 
                     DanisanAntrenorEslesmesi danisanAntrenorEslesmesi = new DanisanAntrenorEslesmesi();
                     danisanAntrenorEslesmesi.setAntrenor(uygunAntrenor);

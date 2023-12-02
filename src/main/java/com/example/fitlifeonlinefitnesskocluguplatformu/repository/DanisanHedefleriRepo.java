@@ -12,7 +12,7 @@ public interface DanisanHedefleriRepo extends JpaRepository<DanisanHedefleri,Int
 
     DanisanHedefleri findDanisanHedefleriByDanisanAndDeneyim(Danisan danisan, Deneyimler deneyim);
 
-    @Query("SELECT dh.danisan FROM DanisanHedefleri dh WHERE dh.deneyim.id = :deneyimId")
+    @Query("SELECT dh.danisan FROM DanisanHedefleri dh WHERE dh.deneyim.id = :deneyimId AND dh.danisan.aktifMi= true")
     List<Danisan> findDanisanByDeneyim_Id(int deneyimId);
 
 }
