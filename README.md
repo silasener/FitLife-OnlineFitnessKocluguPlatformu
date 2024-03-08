@@ -14,6 +14,13 @@ The FitLife project is a web application designed to offer online fitness coachi
 - **Database:** Cloud-based relational database service
 - **Web Development:** HTML, CSS, JavaScript
 
+ ## Project Screens
+
+1. **Weekly Report Screen:**
+<img width="450" alt="haftalikRaporlama" src="https://github.com/silasener/Online-Fitness-Coaching-Platform/assets/105547660/b661aa7b-e321-4a88-9360-780738c92508">
+2. **Daily Report Screen**
+<img width="471" alt="gunlukRaporlama" src="https://github.com/silasener/Online-Fitness-Coaching-Platform/assets/105547660/05449a7a-f1a1-4878-83fe-f67750db2951">
+
 ## Project Overview
 
 The FitLife platform comprises several key features:
