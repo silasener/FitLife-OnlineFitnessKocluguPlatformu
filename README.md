@@ -16,19 +16,11 @@ The FitLife project is a web application designed to offer online fitness coachi
 
 ## Project Screens
 
-<div style="display: flex; justify-content: space-between;">
+1. **Weekly Report Screen:**
+![Weekly Report](https://github.com/silasener/Online-Fitness-Coaching-Platform/assets/105547660/b661aa7b-e321-4a88-9360-780738c92508)
 
-  <div>
-    <p>1. <strong>Weekly Report Screen:</strong></p>
-    <img width="400" src="https://github.com/silasener/Online-Fitness-Coaching-Platform/assets/105547660/b661aa7b-e321-4a88-9360-780738c92508" alt="Weekly Report">
-  </div>
-
-  <div>
-    <p>2. <strong>Daily Report Screen:</strong></p>
-    <img width="400" src="https://github.com/silasener/Online-Fitness-Coaching-Platform/assets/105547660/05449a7a-f1a1-4878-83fe-f67750db2951" alt="Daily Report">
-  </div>
-
-</div>
+2. **Daily Report Screen**
+![Daily Report](https://github.com/silasener/Online-Fitness-Coaching-Platform/assets/105547660/05449a7a-f1a1-4878-83fe-f67750db2951)
 
 
 ## Project Overview
