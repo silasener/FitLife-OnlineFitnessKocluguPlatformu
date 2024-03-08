@@ -40,7 +40,7 @@ The FitLife platform comprises several key features:
    - Each trainer can have a maximum of 5 trainees.
 
 6. **Database Design:**
-   - Utilize a cloud-based relational database service (e.g., Amazon RDS, Firebase, Microsoft Azure SQL).
+   - Utilize a cloud-based relational database service
    - Design tables such as 'User,' 'Trainer,' 'Workout Programs,' 'Nutrition Plans,' 'Messaging,' and 'User-Trainer Relationship.'
    - Establish relationships between tables using keys, ensuring normalization.
 
